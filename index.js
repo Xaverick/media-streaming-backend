@@ -6,7 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const mediaRoutes = require('./routes/mediaRoutes');
 const historyRoutes = require('./routes/historyRoutes');
 const ExpressError = require('./utils/ExpressError');
-
+const { specs, swaggerUi } = require('./config/swagger');
 // Load environment variables
 dotenv.config();
 
@@ -15,6 +15,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Database Connection
 const DB_URL = process.env.MONGO_URI;
@@ -45,4 +46,7 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`API Documentation available at http://localhost:${PORT}/api-docs`);
+});

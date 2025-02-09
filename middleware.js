@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
 
-
+// Middleware to authenticate user
 const authenticateUser = (req, res, next) => {
     const token = req.header('Authorization');
     if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
-
+    // Verify token
     try {
         const decoded = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
         req.user = decoded;
@@ -16,6 +16,7 @@ const authenticateUser = (req, res, next) => {
 };
 
 const requireAdmin = (req, res, next) => {
+    // Check if user is an admin
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Access denied. Admins only.' });
     }

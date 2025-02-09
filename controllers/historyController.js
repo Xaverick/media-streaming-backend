@@ -1,4 +1,4 @@
-const History = require('../models/History');
+const History = require('../models/historyModel');
 
 // Get user watch history
 const getUserHistory = async (req, res) => {
@@ -7,7 +7,28 @@ const getUserHistory = async (req, res) => {
     
 };
 
-// Add media to user watch history
+const deleteHistoryItem = async (req, res) => {
+    try {
+        const { mediaId } = req.params;
+        await History.findOneAndDelete({ userId: req.user.id, mediaId });
+
+        res.status(200).json({ message: "History item deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting history item", error });
+    }
+};
+
+const clearHistory = async (req, res) => {
+    try {
+        await History.deleteMany({ userId: req.user.id });
+        res.status(200).json({ message: "Watch history cleared successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error clearing watch history", error });
+    }
+};
+
+
+
 const addUserHistory = async (req, res) => {
     const { mediaId } = req.params;
     const newHistory = new History({ userId: req.user.id, mediaId });
@@ -17,4 +38,4 @@ const addUserHistory = async (req, res) => {
     
 };
 
-module.exports = { getUserHistory, addUserHistory };
+module.exports = { getUserHistory, addUserHistory, deleteHistoryItem, clearHistory };

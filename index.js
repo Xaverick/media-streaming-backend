@@ -3,8 +3,9 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
-const ExpressError = require('./utils/ExpressError');
 const mediaRoutes = require('./routes/mediaRoutes');
+const historyRoutes = require('./routes/historyRoutes');
+const ExpressError = require('./utils/ExpressError');
 
 // Load environment variables
 dotenv.config();
@@ -27,12 +28,10 @@ db.once("open", () => {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/media', mediaRoutes);
-
-// User Watch History Route
-// const historyRoutes = require('./routes/historyRoutes');
-// app.use('/api/history', historyRoutes);
+app.use('/api/history', historyRoutes);
 
 
+// 404 Error Handling
 app.all("*", (req, res, next) => {
   next(new ExpressError('page not found', 404));
 })

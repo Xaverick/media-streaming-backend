@@ -1,20 +1,33 @@
 const Media = require('../models/mediaModel');
 const { cloudinary } = require('../config/cloudinary');
 const fs = require('fs');
+const History = require('../models/historyModel');
+const jwt = require('jsonwebtoken');
 
 // Get all media with pagination
 const getAllMedia = async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query;
+        let { page = 1, limit = 10 } = req.query;
+        page = parseInt(page);
+        limit = parseInt(limit);
+
         const media = await Media.find()
             .skip((page - 1) * limit)
-            .limit(parseInt(limit));
-        
-        res.status(200).json(media);
+            .limit(limit);
+
+        const total = await Media.countDocuments();
+
+        res.json({
+            total,
+            page,
+            totalPages: Math.ceil(total / limit),
+            data: media
+        });
     } catch (error) {
-        res.status(500).json({ message: "Error fetching media", error });
+        res.status(500).json({ message: 'Error fetching media' });
     }
 };
+
 
 // Search media by title, category, or description
 const searchMedia = async (req, res) => {
@@ -36,57 +49,70 @@ const searchMedia = async (req, res) => {
 
 // Get media by ID
 const getMediaById = async (req, res) => {
-    try {
-        const media = await Media.findById(req.params.id);
-        if (!media) {
-            return res.status(404).json({ message: "Media not found" });
-        }
-        res.status(200).json(media);
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching media", error });
+    const media = await Media.findById(req.params.id);
+    if (!media) {
+        return res.status(404).json({ message: "Media not found" });
     }
+
+
+    const token = req.header('Authorization');
+    if (token){
+        const decoded = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
+        req.user = decoded;
+        if (req.user) {
+            const userId = req.user.id;
+            const existingHistory = await History.findOne({ userId, mediaId: media._id });
+
+            if (!existingHistory) {
+                const newHistory = new History({ userId, mediaId: media._id });
+                await newHistory.save();
+            }
+        }
+    }
+    res.status(200).json(media);
 };
+
 
 // Upload media (Admin Only)
 const uploadMedia = async (req, res) => {
-        if (!req.file) {
-            return res.status(400).json({ message: "No file uploaded" });
-        }
+    if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+    }
 
-        // Upload to Cloudinary
-        const result = await cloudinary.uploader.upload(req.file.path, { resource_type: 'auto' });
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, { resource_type: 'auto' });
 
-        // Determine media type
-        let mediaType;
-        if (result.is_audio) {
-            mediaType = "audio";
-        } else{
-            mediaType = "video";
-        }
+    // Determine media type
+    let mediaType;
+    if (result.is_audio) {
+        mediaType = "audio";
+    } else{
+        mediaType = "video";
+    }
 
-        console.log(result);
-        console.log(mediaType);
-        console.log(req.body);
+    console.log(result);
+    console.log(mediaType);
+    console.log(req.body);
 
-        req.body.tags = Array.isArray(req.body.tags) ? req.body.tags : JSON.parse(req.body.tags);
-        console.log(req.body.tags);
-        // Delete the temp file from the server after uploading
-        fs.unlinkSync(req.file.path);
+    req.body.tags = Array.isArray(req.body.tags) ? req.body.tags : JSON.parse(req.body.tags);
+    console.log(req.body.tags);
+    // Delete the temp file from the server after uploading
+    fs.unlinkSync(req.file.path);
 
 
-        // Save media details in DB
-        const newMedia = new Media({
-            title: req.body.title,
-            description: req.body.description,
-            category: req.body.category,
-            tags: req.body.tags,
-            mediaUrl: result.secure_url,
-            type: mediaType, // Setting the type dynamically
-            uploadedBy: req.user.id, // Assuming user ID is retrieved from authentication
-        });
+    // Save media details in DB
+    const newMedia = new Media({
+        title: req.body.title,
+        description: req.body.description,
+        category: req.body.category,
+        tags: req.body.tags,
+        mediaUrl: result.secure_url,
+        type: mediaType, // Setting the type dynamically
+        uploadedBy: req.user.id, // Assuming user ID is retrieved from authentication
+    });
 
-        await newMedia.save();
-        res.status(201).json({ message: "Media uploaded successfully", media: newMedia });
+    await newMedia.save();
+    res.status(201).json({ message: "Media uploaded successfully", media: newMedia });
 };
 
 // Delete media (Admin Only)
@@ -148,6 +174,7 @@ const updateMedia = async (req, res) => {
 
         res.status(200).json({ message: "Media updated successfully", media });
 };
+
 
 // Get all available categories
 const getCategories = async (req, res) => {

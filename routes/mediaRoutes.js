@@ -12,7 +12,8 @@ const router = express.Router();
 
 
 router.route('/')
-    .get(apiLimiter, authenticateUser, catchAsync(getAllMedia));
+    .get(apiLimiter, catchAsync(getAllMedia));
+    // .get(apiLimiter, authenticateUser, catchAsync(getAllMedia));
 
 router.route('/search')
     .get(apiLimiter, authenticateUser, catchAsync(searchMedia));
@@ -21,7 +22,8 @@ router.route('/categories')
     .get(apiLimiter, authenticateUser, catchAsync(getCategories));
 
 router.route('/:id')
-    .get(authenticateUser, catchAsync(getMediaById))
+    // .get(authenticateUser, catchAsync(getMediaById))
+    .get(apiLimiter, catchAsync(getMediaById))
     .put(authenticateUser, requireAdmin, upload.single('file'), catchAsync(updateMedia))
     .delete(authenticateUser, requireAdmin, catchAsync(deleteMedia))
 

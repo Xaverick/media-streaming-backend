@@ -11,8 +11,10 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const allowedMimeTypes = ['video/mp4', 'video/avi', 'video/mov', 'video/mkv', 'audio/mpeg', 'audio/mp3', 'audio/wav'];
 
+// const allowedMimeTypes = ['video/mp4', 'video/avi', 'video/mov', 'video/mkv', 'audio/mpeg', 'audio/mp3', 'audio/wav'];
+
+// Multer Storage Configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadDir = './public/temp';

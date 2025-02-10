@@ -81,6 +81,7 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```sh
 git clone https://github.com/your-repo/media-streaming-backend.git
 cd media-streaming-backend
+```
 
 2. Install the dependencies:
 
@@ -91,7 +92,7 @@ npm install
 3. Start the server:
 
 ```sh
-node index.js
+npm start
 ```
 
 
@@ -142,5 +143,8 @@ The following dependencies are used in this project:
 | `cloudinary` | For media storage |
 | `multer`     | For handling file uploads |
 | `dotenv`     | For loading environment variables |
+| `swagger-jsdoc` | For generating Swagger documentation |
+| `swagger-ui-express` | For displaying Swagger documentation |
+
 
 ---

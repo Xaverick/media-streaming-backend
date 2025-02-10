@@ -15,6 +15,10 @@ const options = {
         url: `http://localhost:${process.env.PORT}`,
         description: 'Development server',
       },
+      {
+        url: 'https://media-streaming-backend.onrender.com',
+        description: 'Production server',
+      },
     ],
     components: {
       securitySchemes: {

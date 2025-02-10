@@ -10,7 +10,19 @@ This is a backend service for a media streaming application. It provides APIs fo
 - **Watch Progress**: Save and retrieve user watch progress.
 - **Watchlist**: Add and remove media from the user's watchlist.
 - **Recommendations**: Provide personalized media recommendations based on user watch history and preferences.
+- **API Rate Limiting**: Prevent excessive API calls to improve security and efficiency.
+- **Pagination**: Implement pagination for handling large datasets efficiently.
 - **API Documentation**: Swagger-based API documentation.
+
+--- 
+## Deployment & Hosted Links
+
+| Service      | Hosted Link |
+|-------------|------------|
+| **Backend API** | [https://your-api-link.com](https://media-streaming-backend-inyq.onrender.com) |
+| **Swagger Docs** | [https://your-api-link.com/api-docs](https://media-streaming-backend-inyq.onrender.com) |
+
+---
 
 ## Project Structure
 
@@ -93,7 +105,7 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 3. Start the server:
 
     ```sh
-    npm start
+    node index.js
     ```
 
 
@@ -110,7 +122,8 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 - Middleware functions are used to authenticate users and restrict access to certain endpoints.
 
 ### Media Management
-- Media files are uploaded to **Cloudinary**.
+- Media files are first temporarily stored on the server.
+- Once uploaded to **Cloudinary**, the files are deleted from the server.
 - **Multer** is used for handling file uploads.
 - Media metadata is stored in **MongoDB**.
 
@@ -126,6 +139,14 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 - Personalized media recommendations are generated based on user watch history and preferences.
 - Recommendation data is stored in **MongoDB**.
 - Machine learning algorithms can be integrated to improve recommendation accuracy.
+
+### API Rate Limiting
+- Rate limiting is implemented to prevent excessive API calls.
+- **express-rate-limit** middleware is used to limit the number of requests per IP.
+
+### Pagination
+- Pagination is implemented to handle large datasets efficiently.
+- **skip** and **limit** parameters are used to fetch paginated data.
 
 ### Error Handling
 - Custom error handling middleware is used to handle errors and send appropriate responses.

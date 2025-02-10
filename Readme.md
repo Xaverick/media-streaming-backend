@@ -19,8 +19,8 @@ This is a backend service for a media streaming application. It provides APIs fo
 
 | Service      | Hosted Link |
 |-------------|------------|
-| **Backend API** | [https://your-api-link.com](https://media-streaming-backend-inyq.onrender.com) |
-| **Swagger Docs** | [https://your-api-link.com/api-docs](https://media-streaming-backend-inyq.onrender.com) |
+| **Backend API** | [https://media-streaming-backend-inyq.onrender.com](#) |
+| **Swagger Docs** | [https://media-streaming-backend-inyq.onrender.com/api-docs](#) |
 
 ---
 

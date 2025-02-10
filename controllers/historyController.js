@@ -29,13 +29,4 @@ const clearHistory = async (req, res) => {
 
 
 
-const addUserHistory = async (req, res) => {
-    const { mediaId } = req.params;
-    const newHistory = new History({ userId: req.user.id, mediaId });
-
-    await newHistory.save();
-    res.status(201).json({ message: "History added", history: newHistory });
-    
-};
-
-module.exports = { getUserHistory, addUserHistory, deleteHistoryItem, clearHistory };
+module.exports = { getUserHistory, deleteHistoryItem, clearHistory };

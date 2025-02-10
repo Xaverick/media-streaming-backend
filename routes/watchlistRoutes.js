@@ -27,7 +27,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /api//watchlist:
+ * /api/watchlist:
  *   get:
  *     summary: Get user's watchlist
  *     tags: [Watchlist]

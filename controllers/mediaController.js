@@ -86,17 +86,15 @@ const uploadMedia = async (req, res) => {
   } else {
     mediaType = "video";
   }
+  // console.log("Received tags:", req.body.tags);
+  // console.log(result);
+  // console.log(mediaType);
+  // console.log(req.body);
+  fs.unlinkSync(req.file.path);
 
-  console.log(result);
-  console.log(mediaType);
-  console.log(req.body);
-
-  req.body.tags = Array.isArray(req.body.tags)
-    ? req.body.tags
-    : JSON.parse(req.body.tags);
+  req.body.tags = typeof req.body.tags === "string" ? JSON.parse(req.body.tags) : req.body.tags;
   console.log(req.body.tags);
   // Delete the temp file from the server after uploading
-  fs.unlinkSync(req.file.path);
 
   // Save media details in DB
   const newMedia = new Media({

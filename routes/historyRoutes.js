@@ -1,5 +1,5 @@
 const express = require('express');
-const { getUserHistory, addToHistory, deleteHistoryItem, clearHistory } = require('../controllers/historyController');
+const { getUserHistory, deleteHistoryItem, clearHistory } = require('../controllers/historyController');
 const { authenticateUser } = require('../middleware');
 const catchAsync = require('../utils/CatchAsync.js');
 const router = express.Router();
@@ -84,27 +84,5 @@ module.exports = router;
  *       500:
  *         description: Internal server error.
  * 
- *   post:
- *     summary: Add media to user watch history
- *     description: Adds a media item to the user's watch history.
- *     tags: [History]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: mediaId
- *         required: true
- *         schema:
- *           type: string
- *         description: The ID of the media to be added to history.
- *     responses:
- *       201:
- *         description: History added successfully.
- *       400:
- *         description: Invalid request.
- *       401:
- *         description: Unauthorized access.
- *       500:
- *         description: Internal server error.
  */
 

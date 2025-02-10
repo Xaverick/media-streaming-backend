@@ -19,10 +19,10 @@ router.route('/recommendations')
     .get(apiLimiter, authenticateUser, catchAsync(getRecommendations));
 
 router.route('/search')
-    .get(apiLimiter, authenticateUser, catchAsync(searchMedia));
+    .get(apiLimiter, catchAsync(searchMedia));
 
 router.route('/categories')
-    .get(apiLimiter, authenticateUser, catchAsync(getCategories));
+    .get(apiLimiter, catchAsync(getCategories));
 
 router.route('/:id')
     // .get(authenticateUser, catchAsync(getMediaById))
@@ -80,8 +80,6 @@ module.exports = router;
  *     summary: Search media
  *     description: Search media by title, category, or description.
  *     tags: [Media]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - name: q
  *         in: query
@@ -101,8 +99,6 @@ module.exports = router;
  *   get:
  *     summary: Get media categories
  *     description: Fetch all distinct media categories.
- *     security:
- *       - bearerAuth: []
  *     tags: [Media]
  *     responses:
  *       200:
@@ -131,6 +127,8 @@ module.exports = router;
  *     summary: Get media by ID
  *     description: Fetch a media item by its unique ID.
  *     tags: [Media]
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -168,9 +166,7 @@ module.exports = router;
  *               category:
  *                 type: string
  *               tags:
- *                 type: array
- *                 items:
- *                   type: string
+ *                 type: string
  *               file:
  *                 type: string
  *                 format: binary
@@ -205,7 +201,8 @@ module.exports = router;
  * /api/media/upload:
  *   post:
  *     summary: Upload media (Admin only)
- *     description: Upload a new media file.
+ *     description: Upload a new media file. for tags please enter in this manner "[\"tag1\", \"tag2\"]"
+ * 
  *     tags: [Media]
  *     security:
  *       - bearerAuth: []
@@ -223,9 +220,7 @@ module.exports = router;
  *               category:
  *                 type: string
  *               tags:
- *                 type: array
- *                 items:
- *                   type: string
+ *                 type: string
  *               file:
  *                 type: string
  *                 format: binary

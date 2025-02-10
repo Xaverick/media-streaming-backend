@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 const mediaRoutes = require('./routes/mediaRoutes');
 const historyRoutes = require('./routes/historyRoutes');
+const watchlistRoutes = require('./routes/watchlistRoutes');
+const watchProgressRoutes = require('./routes/watchProgressRoutes');
 const ExpressError = require('./utils/ExpressError');
 const { specs, swaggerUi } = require('./config/swagger');
 // Load environment variables
@@ -30,7 +32,8 @@ db.once("open", () => {
 app.use('/api/auth', authRoutes);
 app.use('/api/media', mediaRoutes);
 app.use('/api/history', historyRoutes);
-
+app.use("/api/watchlist", watchlistRoutes);
+app.use("/api/progress", watchProgressRoutes);
 
 // 404 Error Handling
 app.all("*", (req, res, next) => {

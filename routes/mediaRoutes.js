@@ -2,7 +2,7 @@ const express = require('express');
 const { 
     getAllMedia, searchMedia, getMediaById, 
     uploadMedia, deleteMedia, updateMedia, 
-    getCategories 
+    getCategories, getRecommendations 
 } = require('../controllers/mediaController');
 
 const { authenticateUser, requireAdmin, apiLimiter} = require('../middleware');
@@ -14,6 +14,9 @@ const router = express.Router();
 router.route('/')
     .get(apiLimiter, catchAsync(getAllMedia));
     // .get(apiLimiter, authenticateUser, catchAsync(getAllMedia));
+
+router.route('/recommendations')
+    .get(apiLimiter, authenticateUser, catchAsync(getRecommendations));
 
 router.route('/search')
     .get(apiLimiter, authenticateUser, catchAsync(searchMedia));
@@ -106,6 +109,19 @@ module.exports = router;
  *         description: List of categories retrieved.
  *       500:
  *         description: Internal server error.
+ */
+
+/**
+ * @swagger
+ * /api/media/recommendations:
+ *   get:
+ *     summary: Get personalized recommendations
+ *     tags: [Recommendations]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Returns a list of recommended media
  */
 
 /**

@@ -1,24 +1,25 @@
 const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
+const ExpressError = require('./utils/ExpressError');
 
 // Middleware to authenticate user
 const authenticateUser = (req, res, next) => {
     const token = req.header('Authorization');
-    if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
+    if (!token) throw new ExpressError('No token, authorization denied', 401);
     // Verify token
     try {
         const decoded = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
         req.user = decoded;
         next();
     } catch (error) {
-        res.status(400).json({ message: 'Invalid token' });
+        throw new ExpressError('Token is not valid', 401);
     }
 };
 
 const requireAdmin = (req, res, next) => {
     // Check if user is an admin
     if (req.user.role !== 'admin') {
-        return res.status(403).json({ message: 'Access denied. Admins only.' });
+        throw new ExpressError('Access denied', 403);
     }
     next();
 };

@@ -35,22 +35,19 @@ exports.signup = async (req, res) => {
 
 // User Login
 exports.login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        
-        if(!email || !password) {
-            throw new ExpressError("All fields are required", 400);
-        }
-        const user = await User.findOne({email});
-        if(!user) {
-            throw new ExpressError("Invalid credentials", 400);
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) throw new ExpressError("Invalid credentials", 400);
-
-        res.json({ token: generateToken(user), user: { id: user._id, name: user.name, email, role: user.role } });
-    } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+    const { email, password } = req.body;
+    
+    if(!email || !password) {
+        throw new ExpressError("All fields are required", 400);
     }
+    const user = await User.findOne({email});
+    if(!user) {
+        throw new ExpressError("Invalid credentials", 400);
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw new ExpressError("Invalid credentials", 400);
+
+    res.json({ token: generateToken(user), user: { id: user._id, name: user.name, email, role: user.role } });
+    
 };

@@ -201,7 +201,7 @@ module.exports = router;
  * /api/media/upload:
  *   post:
  *     summary: Upload media (Admin only)
- *     description: Upload a new media file. for tags please enter in this manner "[\"tag1\", \"tag2\"]"
+ *     description: Upload a new media file. for tags please enter in this manner ""[\"tag1\", \"tag2\"]""
  * 
  *     tags: [Media]
  *     security:

@@ -78,22 +78,23 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 
 1. Clone the repository:
 
-   \`\`\`sh
+   ```sh
    git clone https://github.com/your-repo/media-streaming-backend.git
-   cd media-streaming-backend
-   \`\`\`
+    ```
+    ```sh
+    cd media-streaming-backend
+    ```
 
 2. Install the dependencies:
 
-   \`\`\`sh
-   npm install
-   \`\`\`
-
+    ```sh
+    npm install
+    ```
 3. Start the server:
 
-   \`\`\`sh
-   npm start
-   \`\`\`
+    ```sh
+    npm start
+    ```
 
 
 ## Server Information

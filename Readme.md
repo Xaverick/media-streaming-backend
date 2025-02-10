@@ -63,6 +63,31 @@ utils/
     ExpressError.js    
 ```
 
+```mermaid
+
+graph TD;
+    User[User] -->|Requests Media| Frontend[Clinikk TV Frontend];
+    Frontend -->|API Call| Backend[Clinikk TV Backend (Node.js)];
+    
+    Backend -->|Fetches Data| Database[MongoDB];
+    Backend -->|Retrieves Media URL| CloudStorage[Cloudinary];
+    
+    Backend -->|Saves Watch Progress| HistoryDB[History Collection (MongoDB)];
+    
+    Frontend -->|Streams Video| CloudStorage;
+    Frontend -->|Sends Watch Progress Updates| Backend;
+    
+    Backend -->|Updates Watch History| HistoryDB;
+    
+    Admin[Admin User] -->|Uploads Media| Backend;
+    Backend -->|Stores Media| CloudStorage;
+    
+    Backend -->|Authenticates| AuthService[JWT Auth Service];
+    
+    AuthService -->|Validates Users| Database;
+
+```
+
 
 ## Setup Instructions
 

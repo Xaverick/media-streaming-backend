@@ -64,15 +64,14 @@ utils/
 ```
 
 ```mermaid
-
 graph TD;
     User[User] -->|Requests Media| Frontend[Clinikk TV Frontend];
-    Frontend -->|API Call| Backend[Clinikk TV Backend (Node.js)];
+    Frontend -->|API Call| Backend[Media Streaming Backend];
     
     Backend -->|Fetches Data| Database[MongoDB];
     Backend -->|Retrieves Media URL| CloudStorage[Cloudinary];
     
-    Backend -->|Saves Watch Progress| HistoryDB[History Collection (MongoDB)];
+    Backend -->|Saves Watch Progress| HistoryDB[History Collection];
     
     Frontend -->|Streams Video| CloudStorage;
     Frontend -->|Sends Watch Progress Updates| Backend;
@@ -85,6 +84,7 @@ graph TD;
     Backend -->|Authenticates| AuthService[JWT Auth Service];
     
     AuthService -->|Validates Users| Database;
+
 
 ```
 

@@ -16,7 +16,7 @@ const options = {
         description: 'Development server',
       },
       {
-        url: 'https://media-streaming-backend.onrender.com',
+        url: 'https://media-streaming-backend-inyq.onrender.com',
         description: 'Production server',
       },
     ],
